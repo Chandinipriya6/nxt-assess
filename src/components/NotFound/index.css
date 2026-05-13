@@ -1,0 +1,23 @@
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.not-found-image {
+  width: 320px;
+  margin-bottom: 24px;
+}
+
+.not-found-container h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.not-found-container p {
+  color: #64748b;
+}
