@@ -1,86 +1,3 @@
-// import {useState} from 'react'
-// import {Navigate, useNavigate} from 'react-router-dom'
-// import Cookies from 'js-cookie'
-
-// const Login = () => {
-//   const navigate = useNavigate()
-
-//   const [username, setUsername] = useState('rahul')
-//   const [password, setPassword] = useState('rahul@2021')
-//   const [showPassword, setShowPassword] = useState(false)
-//   const [errorMsg, setErrorMsg] = useState('')
-
-//   const token = Cookies.get('jwt_token')
-
-//   if (token) {
-//     return <Navigate to="/" replace />
-//   }
-
-//   const onSubmitForm = async event => {
-//     event.preventDefault()
-
-// const response = await fetch('/api/login', {
-//     method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       body: JSON.stringify({username, password}),
-//     })
-
-//     const data = await response.json()
-
-//     if (response.ok) {
-//       Cookies.set('jwt_token', data.jwt_token, {expires: 7})
-//       navigate('/', {replace: true})
-//     } else {
-//       setErrorMsg(data.error_msg)
-//       }
-//   }
-
-//   return (
-//     <div>
-//       <img
-//         src="https://assets.ccbp.in/frontend/react-js/nxt-assess/login-img.png"
-//         alt="login website logo"
-//         width="150"
-//       />
-
-//       <form onSubmit={onSubmitForm}>
-//         <div>
-//           <label htmlFor="username">Username</label>
-//           <input
-//             id="username"
-//             value={username}
-//             onChange={e => setUsername(e.target.value)}
-//           />
-//         </div>
-//         <div>
-//           <label htmlFor="password">Password</label>
-//           <input
-//             id="password"
-//             type={showPassword ? 'text' : 'password'}
-//             value={password}
-//             onChange={e => setPassword(e.target.value)}
-//           />
-//         </div>
-
-//         <div>
-//           <input
-//             id="showPassword"
-//             type="checkbox"
-//             checked={showPassword}
-//             onChange={e => setShowPassword(e.target.checked)}
-//           />
-//           <label htmlFor="showPassword">Show Password</label>
-//         </div>
-//         <button type="submit">Login</button>
-
-//         {errorMsg && <p>*{errorMsg}</p>}
-//       </form>
-//     </div>
-//   )
-// }
-// export default Login
 import './index.css'
 import {useState} from 'react'
 import {Navigate, useNavigate} from 'react-router-dom'
@@ -94,35 +11,44 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [errorMsg, setErrorMsg] = useState('')
 
-  const token = Cookies.get('jwt_token')
+  const jwtToken = Cookies.get('jwt_token')
 
-  if (token) {
+  if (jwtToken !== undefined) {
     return <Navigate to="/" replace />
   }
 
   const onSubmitForm = async event => {
     event.preventDefault()
 
-    const apiUrl =
-  import.meta.env.DEV
-    ? '/api/login'
-    : 'https://apis.ccbp.in/login'
+    const loginApiUrl = import.meta.env.DEV
+      ? '/api/login'
+      : 'https://apis.ccbp.in/login'
 
-const response = await fetch(apiUrl, {
+    const options = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({username, password}),
-    })
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    }
 
-    const data = await response.json()
+    try {
+      const response = await fetch(loginApiUrl, options)
+      const data = await response.json()
 
-    if (response.ok) {
-      Cookies.set('jwt_token', data.jwt_token, {expires: 7})
-      navigate('/', {replace: true})
-    } else {
-      setErrorMsg(data.error_msg)
+      if (response.ok) {
+        Cookies.set('jwt_token', data.jwt_token, {
+          expires: 7,
+        })
+        navigate('/', {replace: true})
+      } else {
+        setErrorMsg(data.error_msg)
+      }
+    } catch (error) {
+      setErrorMsg('Something went wrong. Please try again.')
     }
   }
 
@@ -145,7 +71,7 @@ const response = await fetch(apiUrl, {
               id="username"
               type="text"
               value={username}
-              onChange={e => setUsername(e.target.value)}
+              onChange={event => setUsername(event.target.value)}
             />
           </div>
 
@@ -158,7 +84,7 @@ const response = await fetch(apiUrl, {
               id="password"
               type={showPassword ? 'text' : 'password'}
               value={password}
-              onChange={e => setPassword(e.target.value)}
+              onChange={event => setPassword(event.target.value)}
             />
           </div>
 
@@ -168,7 +94,7 @@ const response = await fetch(apiUrl, {
               id="showPassword"
               type="checkbox"
               checked={showPassword}
-              onChange={e => setShowPassword(e.target.checked)}
+              onChange={event => setShowPassword(event.target.checked)}
             />
             <label className="checkbox-label" htmlFor="showPassword">
               Show Password
