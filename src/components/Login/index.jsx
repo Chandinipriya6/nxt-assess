@@ -20,9 +20,7 @@ const Login = () => {
   const onSubmitForm = async event => {
     event.preventDefault()
 
-    const loginApiUrl = import.meta.env.DEV
-      ? '/api/login'
-      : 'https://apis.ccbp.in/login'
+    const loginApiUrl = '/api/login'
 
     const options = {
       method: 'POST',
