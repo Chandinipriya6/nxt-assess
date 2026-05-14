@@ -27,7 +27,12 @@ const Assessment = () => {
     const getQuestions = async () => {
       setStatus('loading')
 
-      const response = await fetch('/api/assess/questions')
+     const questionsApiUrl =
+  import.meta.env.DEV
+    ? '/api/assess/questions'
+    : 'https://apis.ccbp.in/assess/questions'
+
+const response = await fetch(questionsApiUrl) 
 
       if (response.ok) {
         const data = await response.json()

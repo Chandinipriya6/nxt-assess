@@ -103,7 +103,12 @@ const Login = () => {
   const onSubmitForm = async event => {
     event.preventDefault()
 
-    const response = await fetch('/api/login', {
+    const apiUrl =
+  import.meta.env.DEV
+    ? '/api/login'
+    : 'https://apis.ccbp.in/login'
+
+const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
